@@ -1,4 +1,3 @@
-
 import telebot
 from config import TOKEN
 from extensions import CurrencyConverter, APIException, requests, json
@@ -35,8 +34,7 @@ def convert(message: telebot.types.Message):
         bot.send_message(message.chat.id, "Ошибка: Неправильная валюта. Используйте доллар, евро или рубль.")
         return
 
-    # Формируем URL и отправляем запрос
-    r = requests.get(f'https://min-api.cryptocompare.com/data/price?fsym={keys[quote]}&tsyms={keys[base]}')
+    r = requests.get(f'https://api.exchangerate-api.com/v4/latest/{base}')
 
     if r.status_code != 200:
         bot.send_message(message.chat.id, "Ошибка получения данных. Попробуйте позже.")
@@ -51,6 +49,4 @@ def convert(message: telebot.types.Message):
 
 if __name__ == '__main__':
     bot.polling()
-
-
 

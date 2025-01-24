@@ -7,7 +7,7 @@ class APIException(Exception):
 class CurrencyConverter:
     @staticmethod
     def get_price(base, quote, amount):
-        url = f'https://min-api.cryptocompare.com/data/price?fsym={keys[quote]}&tsyms={keys[base]}'
+        url = f"https://api.exchangerate-api.com/v4/latest/{base}"
         response = requests.get(url)
 
         if response.status_code != 200:
@@ -19,8 +19,8 @@ class CurrencyConverter:
 
         try:
             base_amount = data['rates'][quote] * amount
-        except KeyError:
-            raise APIException(f"Валюта {base} не найдена.")
+            return base_amount
+        except Exception as e:
+            raise APIException(f"Ошибка при расчете. Причина: {str(e)}")
 
-        return base_amount
 
